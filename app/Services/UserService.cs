@@ -1,0 +1,50 @@
+using app.Constants;
+using app.Contracts;
+using app.Data;
+using app.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace app.Services;
+
+public sealed class UserService(AuthDbContext db, ITokenService tokenService) : IUserService
+{
+    public async Task<ServiceResult> CreateUserAsync(CreateUserRequest request, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(request.LoginId) ||
+            string.IsNullOrWhiteSpace(request.RegisteredByEmail) ||
+            string.IsNullOrWhiteSpace(request.UpdatedByEmail))
+        {
+            return ServiceResult.Failure(ErrorCodes.UserRequiredFields, StatusCodes.Status400BadRequest);
+        }
+
+        var loginId = request.LoginId.Trim().ToLowerInvariant();
+        if (await db.Users.AnyAsync(x => x.LoginId == loginId, cancellationToken))
+        {
+            return ServiceResult.Failure(ErrorCodes.UserDuplicateLoginId, StatusCodes.Status409Conflict);
+        }
+
+        var generatedPassword = tokenService.GenerateRandomPassword();
+        var user = new User
+        {
+            LoginId = loginId,
+            PasswordHash = tokenService.HashValue(generatedPassword),
+            RegisteredAtUtc = request.RegisteredAtUtc,
+            PasswordChangedAtUtc = null,
+            RegisteredByEmail = request.RegisteredByEmail.Trim().ToLowerInvariant(),
+            UpdatedByEmail = request.UpdatedByEmail.Trim().ToLowerInvariant()
+        };
+
+        db.Users.Add(user);
+        await db.SaveChangesAsync(cancellationToken);
+
+        return ServiceResult.Success(new
+        {
+            user.Id,
+            user.LoginId,
+            user.RegisteredAtUtc,
+            user.RegisteredByEmail,
+            user.UpdatedByEmail,
+            GeneratedPassword = generatedPassword
+        }, "User created successfully.", StatusCodes.Status201Created);
+    }
+}
