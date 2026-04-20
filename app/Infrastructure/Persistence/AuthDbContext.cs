@@ -1,7 +1,7 @@
-using app.Entities;
+using app.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace app.Data;
+namespace app.Infrastructure.Persistence;
 
 public class AuthDbContext(DbContextOptions<AuthDbContext> options) : DbContext(options)
 {

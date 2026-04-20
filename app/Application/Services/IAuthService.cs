@@ -1,6 +1,6 @@
-using app.Contracts;
+using app.Application.Contracts;
 
-namespace app.Services;
+namespace app.Application.Services;
 
 public interface IAuthService
 {

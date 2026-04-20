@@ -1,8 +1,9 @@
 using System.Text;
+using app.Application.Services;
 using app.Constants;
-using app.Data;
-using app.Options;
-using app.Services;
+using app.Infrastructure.Caching;
+using app.Infrastructure.Persistence;
+using app.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

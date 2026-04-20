@@ -1,10 +1,10 @@
+using app.Application.Contracts;
 using app.Constants;
-using app.Contracts;
-using app.Data;
-using app.Entities;
+using app.Infrastructure.Persistence;
+using app.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace app.Services;
+namespace app.Application.Services;
 
 public sealed class AuthService(
     AuthDbContext db,

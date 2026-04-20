@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace app.Contracts;
+namespace app.Application.Contracts;
 
 public record LoginRequest(
     [param: Required]

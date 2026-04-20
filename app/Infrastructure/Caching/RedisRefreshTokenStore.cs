@@ -1,6 +1,7 @@
+using app.Application.Services;
 using StackExchange.Redis;
 
-namespace app.Services;
+namespace app.Infrastructure.Caching;
 
 public sealed class RedisRefreshTokenStore(IConnectionMultiplexer redis, ITokenService tokenService) : IRefreshTokenStore
 {

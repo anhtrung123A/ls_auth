@@ -1,5 +1,5 @@
-using app.Contracts;
-using app.Services;
+using app.Application.Contracts;
+using app.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers;

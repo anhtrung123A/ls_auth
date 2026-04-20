@@ -1,6 +1,6 @@
 using app.Constants;
 
-namespace app.Services;
+namespace app.Application.Services;
 
 public sealed class ServiceResult
 {

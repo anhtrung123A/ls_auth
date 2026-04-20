@@ -2,11 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using app.Options;
+using app.Application.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace app.Services;
+namespace app.Infrastructure.Security;
 
 public sealed class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenService
 {

@@ -1,4 +1,4 @@
-namespace app.Options;
+namespace app.Infrastructure.Security;
 
 public sealed class JwtOptions
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace app.Contracts;
+namespace app.Application.Contracts;
 
 public record RefreshTokenRequest(
     [param: Required]
