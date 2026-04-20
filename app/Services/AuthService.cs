@@ -13,11 +13,6 @@ public sealed class AuthService(
 {
     public async Task<ServiceResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.LoginId) || string.IsNullOrWhiteSpace(request.Password))
-        {
-            return ServiceResult.Failure(ErrorCodes.AuthRequiredFields, StatusCodes.Status400BadRequest);
-        }
-
         var loginId = request.LoginId.Trim().ToLowerInvariant();
         var user = await db.Users.FirstOrDefaultAsync(x => x.LoginId == loginId, cancellationToken);
         if (user is null || user.PasswordHash != tokenService.HashValue(request.Password))
@@ -51,11 +46,6 @@ public sealed class AuthService(
 
     public async Task<ServiceResult> RefreshAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.RefreshToken))
-        {
-            return ServiceResult.Failure(ErrorCodes.AuthRefreshRequired, StatusCodes.Status400BadRequest);
-        }
-
         var sessionId = await refreshTokenStore.GetSessionIdAsync(request.RefreshToken, cancellationToken);
         if (sessionId is null)
         {
@@ -113,11 +103,6 @@ public sealed class AuthService(
 
     public async Task<ServiceResult> LogoutAsync(LogoutRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.RefreshToken))
-        {
-            return ServiceResult.Failure(ErrorCodes.AuthRefreshRequired, StatusCodes.Status400BadRequest);
-        }
-
         var sessionId = await refreshTokenStore.GetSessionIdAsync(request.RefreshToken, cancellationToken);
         if (sessionId is not null)
         {

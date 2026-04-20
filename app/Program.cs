@@ -1,8 +1,10 @@
 using System.Text;
+using app.Constants;
 using app.Data;
 using app.Options;
 using app.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
@@ -11,7 +13,34 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var firstError = context.ModelState.Values
+                .SelectMany(x => x.Errors)
+                .Select(x => x.ErrorMessage)
+                .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x));
+
+            var error = ErrorCodes.ValidationFailed with
+            {
+                Message = firstError ?? ErrorCodes.ValidationFailed.Message
+            };
+
+            return new BadRequestObjectResult(new
+            {
+                Success = false,
+                Status = StatusCodes.Status400BadRequest,
+                Data = (object?)null,
+                Error = new
+                {
+                    error.Code,
+                    error.Message
+                }
+            });
+        };
+    });
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     var connectionString = RequireConfig(builder.Configuration.GetConnectionString("Default"), "ConnectionStrings__Default");

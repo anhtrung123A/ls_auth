@@ -12,6 +12,7 @@ public abstract class ApiControllerBase : ControllerBase
         {
             return StatusCode(result.StatusCode, new
             {
+                Success = true,
                 Status = result.StatusCode,
                 Data = result.Data
             });
@@ -19,6 +20,7 @@ public abstract class ApiControllerBase : ControllerBase
 
         return StatusCode(result.StatusCode, new
         {
+            Success = false,
             Status = result.StatusCode,
             Data = (object?)null,
             Error = new

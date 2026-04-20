@@ -10,13 +10,6 @@ public sealed class UserService(AuthDbContext db, ITokenService tokenService) : 
 {
     public async Task<ServiceResult> CreateUserAsync(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.LoginId) ||
-            string.IsNullOrWhiteSpace(request.RegisteredByEmail) ||
-            string.IsNullOrWhiteSpace(request.UpdatedByEmail))
-        {
-            return ServiceResult.Failure(ErrorCodes.UserRequiredFields, StatusCodes.Status400BadRequest);
-        }
-
         var loginId = request.LoginId.Trim().ToLowerInvariant();
         if (await db.Users.AnyAsync(x => x.LoginId == loginId, cancellationToken))
         {
