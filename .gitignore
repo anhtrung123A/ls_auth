@@ -1,0 +1,57 @@
+## Build results
+bin/
+obj/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## Logs
+*.log
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## NuGet
+*.nupkg
+packages/
+.nuget/
+
+## Publish
+publish/
+*.publishproj
+
+## Environment variables
+.env
+.env.*
+
+## ASP.NET secrets
+appsettings.Development.json
+appsettings.Local.json
+
+## User secrets (dotnet user-secrets)
+secrets.json
+
+## Node (nếu có React frontend)
+node_modules/
+dist/
+build/
+
+## Docker
+docker-compose.override.yml
+
+## Coverage / test
+coverage/
+TestResults/
+
+## Temporary files
+*.tmp
+*.temp
