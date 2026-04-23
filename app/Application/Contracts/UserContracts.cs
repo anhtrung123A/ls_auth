@@ -13,3 +13,17 @@ public record CreateUserRequest(
     [param: EmailAddress]
     string UpdatedByEmail
 );
+
+public record GetPasswordOtpRequest(
+    [param: Required]
+    string LoginId
+);
+
+public record UpdatePasswordRequest(
+    string? LoginId,
+    string? Otp,
+    [param: Required]
+    string Password,
+    [param: Required]
+    string PasswordConfirmation
+);
